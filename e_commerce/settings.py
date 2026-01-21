@@ -9,21 +9,24 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
+import os
 
 from pathlib import Path
-
+from dotenv import load_dotenv
+load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv(BASE_DIR / '.env')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-70*!&2-ai_4(##8ov!%7+$=!u9!c)zyi4*h)0q1j*$sfcxo&7e'
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = []
 
@@ -40,6 +43,7 @@ INSTALLED_APPS = [
     'userApp',
     'rest_framework',
     'productApp',
+    "corsheaders",
 
 ]
 
@@ -51,6 +55,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
 ]
 
 ROOT_URLCONF = 'e_commerce.urls'
@@ -83,8 +89,8 @@ DATABASES = {
     }
 }
 
-RAZORPAY_KEY_ID = "rzp_test_Rr5mX6wD0JKrwb"
-RAZORPAY_KEY_SECRET = "8prZEK2x2OePH1rPKHD9G2mo"
+RAZORPAY_KEY_ID =  os.getenv("RAZORPAY_KEY_ID")
+RAZORPAY_KEY_SECRET = os.getenv("RAZORPAY_KEY_SECRET")
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -150,5 +156,12 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-EMAIL_HOST_USER = 'kadeejashameer07@gmail.com'
-EMAIL_HOST_PASSWORD = 'wsud zhha zime xlqv'
+EMAIL_HOST_USER =  os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+
+
+# CORS_ALLOWED_ORIGINS = [
+    
+# ]
+
+CORS_ALLOW_ALL_ORIGINS = True
